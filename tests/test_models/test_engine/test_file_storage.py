@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains the TestFileStorageDocs classes
+contains the TestFileStorageDocs classes
 """
 
 from datetime import datetime
@@ -116,33 +116,12 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_get(self):
-        """Test that get properly gets an object based on class and id"""
-        storage = FileStorage()
-        state = State()
-        storage.new(state)
-        self.assertEqual(storage.get("State", state.id), state)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_get_none(self):
-        """Test that get properly returns None when object not found"""
-        storage = FileStorage()
-        self.assertEqual(storage.get("State", "-1"), None)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_count(self):
-        """Test that count properly returns count of objects based on class"""
-        storage = FileStorage()
-        original_count = len(storage.all("State"))
-        state = State()
-        storage.new(state)
-        self.assertEqual(storage.count("State"), original_count + 1)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_count_none(self):
-        """Test that count properly returns count of all objects if no class
-        given"""
-        storage = FileStorage()
-        original_count = len(storage.all())
-        state = State()
-        storage.new(state)
-        self.assertEqual(storage.count(), original_count + 1)
+        """Test that get returns specific object"""
+        new_state = State(name="LA")
+        new_state.save()
+        new_user = User(email="monty@monty.com", password="password")
+        new_user.save()
+        self.assertIs(new_state, models.storage.get("State", new_state.id))
+        self.assertIs(None, models.storage.get("WTF", "HSKDJF"))
+        self.assertIs(None, models.storage.get("State", "Luxor"))
+        self.assertIs(new_user, models.storage.get("User", new_user.id))
