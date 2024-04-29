@@ -74,19 +74,23 @@ class FileStorage:
             retrieves one object based on class name and id
         """
         if cls and id:
-            if isinstance(cls, BaseModel):
-                cls_name = str(cls).split('.')[-1]
-            if isinstance(cls, str):
-                cls_name = cls
-            else:
-                cls_name = cls.__name__
-            fetch_obj = "{}.{}".format(cls_name, id)
-            all_obj = self.all(cls)
-            return all_obj.get(fetch_obj)
-        return None
+            if cls in classes.values():
+                all_objects = self.all(cls)
+                for value in all_objects.values():
+                    if value.id == id:
+                        return value
+            return
+        return
 
     def count(self, cls=None):
         """
         count of all objects in storage
         """
-        return (len(self.all(cls)))
+        if not cls:
+            inst_of_all_cls = self.all()
+            return len(inst_of_all_cls)
+        if cls in classes.values():
+            all_inst_of_prov_cls = self.all(cls)
+            return len(all_inst_of_prov_cls)
+        if cls not in classes.values():
+            return

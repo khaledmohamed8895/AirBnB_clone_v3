@@ -77,22 +77,25 @@ class DBStorage:
 
     def get(self, cls, id):
         """retrieve one object with id from current database session"""
-        obj = None
         if cls and id:
-            try:
-                if isinstance(cls, BaseModel):
-                    cls_name = str(cls).split('.')[-1]
-                if isinstance(cls, str):
-                    cls_name = cls
-                else:
-                    cls_name = cls.__name__
-                obj = self.__session.query(classes[cls_name]).get({'id': id})
-            except sqlalchemy.orm.exc.ObjectDeletedError:
-                obj = None
-        return obj
+            if cls in classes.values() and isinstance(id, str):
+                all_objects = self.all(cls)
+                for key, Value in all_objects.items():
+                    if key.split('.')[1] == id:
+                        return Value
+            else:
+                return
+        return
 
     def count(self, cls=None):
         """
             returns the count of all objects in storage
         """
-        return (len(self.all(cls)))
+        if not cls:
+            inst_of_all_cls = self.all()
+            return len(inst_of_all_cls)
+        if cls in classes.values():
+            all_inst_of_prov_cls = self.all(cls)
+            return len(all_inst_of_prov_cls)
+        if cls not in classes.values():
+            return
