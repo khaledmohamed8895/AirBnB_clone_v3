@@ -20,7 +20,6 @@ def status():
     }
 
     resp = jsonify(data)
-    
 
     return resp
 
@@ -41,6 +40,5 @@ def stats():
     }
 
     resp = jsonify(data)
-    
 
     return resp
