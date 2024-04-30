@@ -20,7 +20,7 @@ def status():
     }
 
     resp = jsonify(data)
-    resp.status_code = 200
+    
 
     return resp
 
@@ -41,6 +41,6 @@ def stats():
     }
 
     resp = jsonify(data)
-    resp.status_code = 200
+    
 
     return resp
