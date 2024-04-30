@@ -1,4 +1,6 @@
-ndling Review objects and operations
+#!/usr/bin/python3
+"""
+route for handling Review objects and operations
 """
 from flask import jsonify, abort, request
 from api.v1.views import app_views, storage
