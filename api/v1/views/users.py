@@ -23,7 +23,7 @@ def user_by_id(user_id):
     gets a specific User object by ID
     """
 
-    user = storage.get(User,user_id)
+    user = storage.get(User, user_id)
 
     if user:
         return jsonify(user.to_dict())
@@ -96,4 +96,3 @@ def user_put(user_id):
         return jsonify(user.to_dict()), 200
     else:
         return abort(404)
-
